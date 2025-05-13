@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Crear Nuevo Post{% endblock %}
+
+{% block content %}
+<div class="post-form-container">
+    <h2>Crear Nuevo Post</h2>
+    
+    <form method="POST" action="{{ url_for('create_post') }}" class="post-form">
+        <!-- Mensajes de error/flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Campo para el título -->
+        <div class="form-group">
+            <label for="title">Título:</label>
+            <input type="text" id="title" name="title" 
+                   value="{{ request.form.title if request.form.title }}" 
+                   required
+                   maxlength="100"
+                   placeholder="Escribe un título interesante">
+        </div>
+        
+        <!-- Campo para el contenido -->
+        <div class="form-group">
+            <label for="content">Contenido:</label>
+            <textarea id="content" name="content" required
+                      placeholder="Desarrolla aquí tu contenido...">{{ request.form.content if request.form.content }}</textarea>
+        </div>
+        
+        <!-- Botones de acción -->
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">Publicar Post</button>
+            <a href="{{ url_for('dashboard') }}" class="btn-cancel">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
