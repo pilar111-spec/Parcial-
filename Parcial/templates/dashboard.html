@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <h1>Panel de Control</h1>
+    
+    <div class="post-actions">
+        <a href="{{ url_for('create_post') }}" class="btn-create">+ Nuevo Post</a>
+    </div>
+    
+    <h2>Tus Posts</h2>
+    
+    {% if posts %}
+        <div class="user-posts">
+            {% for post in posts %}
+                <div class="post-item">
+                    <h3>{{ post['title'] }}</h3>
+                    <p class="post-excerpt">{{ post['content'][:150] }}{% if post['content']|length > 150 %}...{% endif %}</p>
+                    <div class="post-meta">
+                        <span>Publicado el {{ post['created_at'] }}</span>
+                        <div class="post-controls">
+                            <a href="{{ url_for('edit_post', post_id=post['id']) }}" class="btn-edit">Editar</a>
+                            <form action="{{ url_for('delete_post', post_id=post['id']) }}" method="POST" class="delete-form">
+                                <button type="submit" class="btn-delete" onclick="return confirm('¿Estás seguro de eliminar este post?')">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-posts">
+            <p>No has publicado ningún post aún.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

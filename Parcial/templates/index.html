@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<div class="posts-container">
+    <h1>Últimos Posts</h1>
+    
+    {% if posts %}
+        {% for post in posts %}
+            <div class="post-card">
+                <h2>{{ post['title'] }}</h2>
+                <div class="post-content">{{ post['content'] }}</div>
+                <div class="post-meta">
+                    <span class="author">Publicado por: {{ post['author'] }}</span>
+                    <span class="date">el {{ post['created_at'] }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-posts">
+            <p>No hay posts publicados aún.</p>
+            {% if 'user_id' not in session %}
+                <a href="{{ url_for('login') }}" class="btn">Inicia sesión para publicar</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
